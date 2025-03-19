@@ -1,0 +1,53 @@
+name: 'Terraform Apply'
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  apply:
+    name: 'Apply'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./infra
+    environment: production
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: '1.5.0'
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        aws-region: us-east-1
+
+    - name: Terraform Init
+      id: init
+      run: terraform init
+
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color -out=tfplan
+
+    - name: Terraform Apply
+      id: apply
+      run: terraform apply -auto-approve tfplan
+
+    - name: Terraform Output
+      id: output
+      run: terraform output -json > tf-output.json
+
+    - name: Upload Terraform Output
+      uses: actions/upload-artifact@v3
+      with:
+        name: terraform-output
+        path: ./infra/tf-output.json
+        retention-days: 90

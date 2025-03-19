@@ -1,0 +1,55 @@
+# Arquivos de estado local do Terraform
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+*.tfstate.lock.info
+
+# Diretório de plugins local do Terraform (executáveis de providers)
+**/.terraform/*
+
+# Arquivos crash log
+crash.log
+crash.*.log
+
+# Excluir todos os arquivos .tfvars, que podem conter dados sensíveis
+*.tfvars
+*.tfvars.json
+
+# Exceto arquivos example.tfvars, que podem ser incluídos se desejado
+# !example.tfvars
+# !example.tfvars.json
+
+# Arquivos CLI de configuração local
+.terraformrc
+terraform.rc
+
+# Arquivos de plano de execução
+*tfplan*
+
+# Arquivos de variáveis de ambiente
+.env
+.envrc
+
+# Arquivos de override
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Arquivos de log
+*.log
+
+# Arquivos de configuração specific para IDEs e Editores
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Arquivos de lock
+.terraform.lock.hcl
+
+# Arquivos de autenticação sensíveis
+*.pem
+*id_rsa*
+*.key
+credentials.json
